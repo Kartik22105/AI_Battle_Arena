@@ -1,0 +1,9 @@
+venv
+venv_ai_battle/
+.venv_py311/
+*.pyc
+__pycache__/
+.ipynb_checkpoints/
+lora_checkpoints/
+final_lora_model/
+*.log

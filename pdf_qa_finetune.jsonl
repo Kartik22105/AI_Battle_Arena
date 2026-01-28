@@ -1,0 +1,35 @@
+{"instruction":"Answer strictly based on the document.","input":"Page 1: The document introduces artificial intelligence and its applications in healthcare.\nQuestion: What is discussed on page 1?","output":"Page 1 introduces artificial intelligence and its applications in healthcare."}
+{"instruction":"Answer strictly based on the document.","input":"Page 2: This page explains machine learning and deep learning differences.\nQuestion: Summarize page 2.","output":"Page 2 explains the differences between machine learning and deep learning."}
+{"instruction":"Answer strictly based on the document.","input":"Page 3: Data privacy is critical when handling medical records.\nQuestion: What is the key point of page 3?","output":"The key point of page 3 is the importance of data privacy for medical records."}
+{"instruction":"Answer strictly based on the document.","input":"Page 4: The methodology includes data collection, preprocessing, and model training.\nQuestion: List the steps in the methodology.","output":"• Data collection\n• Data preprocessing\n• Model training"}
+{"instruction":"Answer strictly based on the document.","input":"Page 5: Results show improved accuracy after optimization.\nQuestion: What do the results indicate?","output":"The results indicate improved accuracy after optimization."}
+
+{"instruction":"Answer strictly based on the document.","input":"Page 6: The system architecture consists of a frontend, backend, and database.\nQuestion: List system components.","output":"• Frontend\n• Backend\n• Database"}
+{"instruction":"Answer strictly based on the document.","input":"Page 7: Limitations include limited dataset size and computational constraints.\nQuestion: What are the limitations?","output":"• Limited dataset size\n• Computational constraints"}
+{"instruction":"Answer strictly based on the document.","input":"Page 8: Future work focuses on scalability and real-time processing.\nQuestion: What is planned for future work?","output":"Future work focuses on scalability and real-time processing."}
+{"instruction":"Answer strictly based on the document.","input":"Page 9: Security policies ensure confidentiality and integrity.\nQuestion: What does page 9 emphasize?","output":"Page 9 emphasizes security policies ensuring confidentiality and integrity."}
+{"instruction":"Answer strictly based on the document.","input":"Page 10: Risk assessment identifies threats and vulnerabilities.\nQuestion: Explain risk assessment.","output":"Risk assessment involves identifying threats and vulnerabilities."}
+
+{"instruction":"Answer strictly based on the document.","input":"Page 11: Access control restricts unauthorized access.\nQuestion: What is access control?","output":"Access control restricts unauthorized access."}
+{"instruction":"Answer strictly based on the document.","input":"Page 12: Encryption protects data during transmission.\nQuestion: Why is encryption used?","output":"Encryption is used to protect data during transmission."}
+{"instruction":"Answer strictly based on the document.","input":"Page 13: Logging helps in monitoring system activity.\nQuestion: What is the purpose of logging?","output":"Logging helps monitor system activity."}
+{"instruction":"Answer strictly based on the document.","input":"Page 14: Authentication verifies user identity.\nQuestion: Define authentication.","output":"Authentication verifies user identity."}
+{"instruction":"Answer strictly based on the document.","input":"Page 15: Authorization determines user permissions.\nQuestion: What does authorization determine?","output":"Authorization determines user permissions."}
+
+{"instruction":"Answer strictly based on the document.","input":"Page 16: Performance testing evaluates response time.\nQuestion: What does performance testing evaluate?","output":"Performance testing evaluates response time."}
+{"instruction":"Answer strictly based on the document.","input":"Page 17: Load testing checks system behavior under stress.\nQuestion: Explain load testing.","output":"Load testing checks system behavior under stress."}
+{"instruction":"Answer strictly based on the document.","input":"Page 18: API endpoints must follow strict JSON formats.\nQuestion: What is required for API endpoints?","output":"API endpoints must follow strict JSON formats."}
+{"instruction":"Answer strictly based on the document.","input":"Page 19: Error handling improves system stability.\nQuestion: Why is error handling important?","output":"Error handling improves system stability."}
+{"instruction":"Answer strictly based on the document.","input":"Page 20: Deployment requires a continuously running server.\nQuestion: What is required for deployment?","output":"Deployment requires a continuously running server."}
+
+{"instruction":"Answer strictly based on the document.","input":"Page 21: Monitoring tools track system performance.\nQuestion: What do monitoring tools track?","output":"Monitoring tools track system performance."}
+{"instruction":"Answer strictly based on the document.","input":"Page 22: Logging errors helps debugging.\nQuestion: How does logging help?","output":"Logging errors helps with debugging."}
+{"instruction":"Answer strictly based on the document.","input":"Page 23: Scalability allows handling increased load.\nQuestion: What is scalability?","output":"Scalability allows the system to handle increased load."}
+{"instruction":"Answer strictly based on the document.","input":"Page 24: Backup systems prevent data loss.\nQuestion: Why are backups important?","output":"Backups are important to prevent data loss."}
+{"instruction":"Answer strictly based on the document.","input":"Page 25: Version control manages code changes.\nQuestion: What is the purpose of version control?","output":"Version control manages code changes."}
+
+{"instruction":"Answer strictly based on the document.","input":"Page 26: Continuous integration automates testing.\nQuestion: What does continuous integration do?","output":"Continuous integration automates testing."}
+{"instruction":"Answer strictly based on the document.","input":"Page 27: Documentation improves maintainability.\nQuestion: Why is documentation important?","output":"Documentation improves maintainability."}
+{"instruction":"Answer strictly based on the document.","input":"Page 28: User feedback helps improve features.\nQuestion: How does user feedback help?","output":"User feedback helps improve features."}
+{"instruction":"Answer strictly based on the document.","input":"Page 29: Updates fix bugs and add enhancements.\nQuestion: What do updates do?","output":"Updates fix bugs and add enhancements."}
+{"instruction":"Answer strictly based on the document.","input":"Page 30: Maintenance ensures long-term stability.\nQuestion: What does maintenance ensure?","output":"Maintenance ensures long-term stability."}
