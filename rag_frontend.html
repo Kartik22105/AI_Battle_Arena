@@ -1,0 +1,884 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Battle Arena - RAG System</title>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=JetBrains+Mono:wght@300;400;600&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #00f3ff;
+            --secondary: #ff006e;
+            --tertiary: #8338ec;
+            --dark: #0a0e27;
+            --darker: #050714;
+            --accent: #ffbe0b;
+            --success: #00ff9f;
+            --error: #ff0055;
+            --glass: rgba(255, 255, 255, 0.05);
+            --glass-border: rgba(255, 255, 255, 0.1);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'JetBrains Mono', monospace;
+            background: var(--darker);
+            color: #fff;
+            overflow-x: hidden;
+            position: relative;
+        }
+
+        /* Animated Background */
+        .background {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            background: 
+                radial-gradient(circle at 20% 50%, rgba(131, 56, 236, 0.1) 0%, transparent 50%),
+                radial-gradient(circle at 80% 80%, rgba(255, 0, 110, 0.1) 0%, transparent 50%),
+                radial-gradient(circle at 40% 20%, rgba(0, 243, 255, 0.1) 0%, transparent 50%);
+            animation: bgPulse 15s ease-in-out infinite;
+        }
+
+        @keyframes bgPulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.7; }
+        }
+
+        /* Grid Overlay */
+        .grid-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            background-image: 
+                linear-gradient(rgba(0, 243, 255, 0.03) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(0, 243, 255, 0.03) 1px, transparent 1px);
+            background-size: 50px 50px;
+            animation: gridScroll 20s linear infinite;
+        }
+
+        @keyframes gridScroll {
+            0% { transform: translateY(0); }
+            100% { transform: translateY(50px); }
+        }
+
+        /* Floating Particles */
+        .particles {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            overflow: hidden;
+        }
+
+        .particle {
+            position: absolute;
+            width: 2px;
+            height: 2px;
+            background: var(--primary);
+            border-radius: 50%;
+            animation: float 10s infinite;
+            opacity: 0.3;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0) translateX(0); }
+            25% { transform: translateY(-100px) translateX(50px); }
+            50% { transform: translateY(-200px) translateX(-30px); }
+            75% { transform: translateY(-100px) translateX(20px); }
+        }
+
+        /* Container */
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 40px 20px;
+            position: relative;
+        }
+
+        /* Header */
+        header {
+            text-align: center;
+            margin-bottom: 60px;
+            animation: fadeInDown 1s ease-out;
+        }
+
+        @keyframes fadeInDown {
+            from {
+                opacity: 0;
+                transform: translateY(-50px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .logo {
+            display: inline-block;
+            margin-bottom: 20px;
+            animation: glowPulse 3s ease-in-out infinite;
+        }
+
+        @keyframes glowPulse {
+            0%, 100% {
+                filter: drop-shadow(0 0 20px var(--primary)) drop-shadow(0 0 40px var(--primary));
+            }
+            50% {
+                filter: drop-shadow(0 0 30px var(--secondary)) drop-shadow(0 0 60px var(--secondary));
+            }
+        }
+
+        h1 {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 4rem;
+            font-weight: 900;
+            background: linear-gradient(135deg, var(--primary), var(--secondary), var(--tertiary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 10px;
+            letter-spacing: 5px;
+            animation: textGlow 2s ease-in-out infinite alternate;
+        }
+
+        @keyframes textGlow {
+            from {
+                filter: drop-shadow(0 0 10px var(--primary));
+            }
+            to {
+                filter: drop-shadow(0 0 25px var(--secondary));
+            }
+        }
+
+        .subtitle {
+            font-size: 1.2rem;
+            color: var(--primary);
+            font-weight: 300;
+            letter-spacing: 3px;
+            opacity: 0;
+            animation: fadeIn 1s ease-out 0.5s forwards;
+        }
+
+        @keyframes fadeIn {
+            to {
+                opacity: 1;
+            }
+        }
+
+        /* Main Panel */
+        .main-panel {
+            background: var(--glass);
+            backdrop-filter: blur(20px);
+            border: 1px solid var(--glass-border);
+            border-radius: 20px;
+            padding: 40px;
+            box-shadow: 
+                0 20px 60px rgba(0, 0, 0, 0.5),
+                inset 0 1px 0 rgba(255, 255, 255, 0.1);
+            animation: slideUp 1s ease-out 0.3s backwards;
+            position: relative;
+            overflow: hidden;
+        }
+
+        @keyframes slideUp {
+            from {
+                opacity: 0;
+                transform: translateY(50px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .main-panel::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: linear-gradient(
+                45deg,
+                transparent,
+                rgba(0, 243, 255, 0.03),
+                transparent
+            );
+            animation: shimmer 3s infinite;
+        }
+
+        @keyframes shimmer {
+            0% { transform: translateX(-100%) translateY(-100%) rotate(45deg); }
+            100% { transform: translateX(100%) translateY(100%) rotate(45deg); }
+        }
+
+        /* Form Section */
+        .form-section {
+            margin-bottom: 30px;
+            position: relative;
+            z-index: 1;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 12px;
+            font-family: 'Orbitron', sans-serif;
+            font-weight: 700;
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            color: var(--primary);
+            position: relative;
+            padding-left: 15px;
+        }
+
+        label::before {
+            content: '▶';
+            position: absolute;
+            left: 0;
+            animation: blink 1.5s infinite;
+        }
+
+        @keyframes blink {
+            0%, 50%, 100% { opacity: 1; }
+            25%, 75% { opacity: 0; }
+        }
+
+        input, textarea {
+            width: 100%;
+            padding: 15px 20px;
+            background: rgba(0, 0, 0, 0.4);
+            border: 2px solid rgba(0, 243, 255, 0.3);
+            border-radius: 10px;
+            color: #fff;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        input:focus, textarea:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 
+                0 0 20px rgba(0, 243, 255, 0.3),
+                inset 0 0 20px rgba(0, 243, 255, 0.1);
+            transform: scale(1.01);
+        }
+
+        input::placeholder, textarea::placeholder {
+            color: rgba(255, 255, 255, 0.3);
+        }
+
+        textarea {
+            min-height: 150px;
+            resize: vertical;
+        }
+
+        /* Questions List */
+        .questions-container {
+            margin-bottom: 30px;
+        }
+
+        .question-item {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 15px;
+            animation: slideInLeft 0.5s ease-out backwards;
+        }
+
+        .question-item:nth-child(1) { animation-delay: 0.1s; }
+        .question-item:nth-child(2) { animation-delay: 0.2s; }
+        .question-item:nth-child(3) { animation-delay: 0.3s; }
+        .question-item:nth-child(4) { animation-delay: 0.4s; }
+        .question-item:nth-child(5) { animation-delay: 0.5s; }
+
+        @keyframes slideInLeft {
+            from {
+                opacity: 0;
+                transform: translateX(-30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        .question-item input {
+            flex: 1;
+        }
+
+        .btn-remove {
+            padding: 15px 20px;
+            background: rgba(255, 0, 85, 0.2);
+            border: 2px solid var(--error);
+            border-radius: 10px;
+            color: var(--error);
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-family: 'Orbitron', sans-serif;
+            font-weight: 700;
+        }
+
+        .btn-remove:hover {
+            background: var(--error);
+            color: #fff;
+            transform: scale(1.05);
+            box-shadow: 0 0 20px var(--error);
+        }
+
+        /* Buttons */
+        .btn {
+            padding: 15px 40px;
+            border: none;
+            border-radius: 10px;
+            font-family: 'Orbitron', sans-serif;
+            font-weight: 700;
+            font-size: 1rem;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .btn::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 0;
+            height: 0;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.3);
+            transform: translate(-50%, -50%);
+            transition: width 0.6s, height 0.6s;
+        }
+
+        .btn:hover::before {
+            width: 300px;
+            height: 300px;
+        }
+
+        .btn span {
+            position: relative;
+            z-index: 1;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, var(--primary), var(--tertiary));
+            color: #fff;
+            border: 2px solid transparent;
+            box-shadow: 0 10px 30px rgba(0, 243, 255, 0.3);
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 15px 40px rgba(0, 243, 255, 0.5);
+        }
+
+        .btn-primary:active {
+            transform: translateY(-1px);
+        }
+
+        .btn-secondary {
+            background: transparent;
+            color: var(--primary);
+            border: 2px solid var(--primary);
+        }
+
+        .btn-secondary:hover {
+            background: rgba(0, 243, 255, 0.1);
+            transform: scale(1.05);
+        }
+
+        .button-group {
+            display: flex;
+            gap: 15px;
+            margin-top: 30px;
+            flex-wrap: wrap;
+        }
+
+        /* Loading Animation */
+        .loading {
+            display: none;
+            text-align: center;
+            padding: 40px;
+            animation: fadeIn 0.5s ease-out;
+        }
+
+        .loading.active {
+            display: block;
+        }
+
+        .spinner {
+            width: 80px;
+            height: 80px;
+            margin: 0 auto 20px;
+            border: 4px solid rgba(0, 243, 255, 0.1);
+            border-top: 4px solid var(--primary);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .loading-text {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 1.2rem;
+            color: var(--primary);
+            animation: pulse 1.5s ease-in-out infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.5; }
+        }
+
+        /* Results Section */
+        .results {
+            margin-top: 40px;
+            display: none;
+            animation: fadeIn 0.5s ease-out;
+        }
+
+        .results.active {
+            display: block;
+        }
+
+        .result-item {
+            background: rgba(0, 0, 0, 0.3);
+            border-left: 4px solid var(--primary);
+            padding: 20px;
+            margin-bottom: 20px;
+            border-radius: 10px;
+            animation: slideInRight 0.5s ease-out backwards;
+            transition: all 0.3s ease;
+        }
+
+        .result-item:hover {
+            background: rgba(0, 0, 0, 0.5);
+            transform: translateX(5px);
+            box-shadow: -5px 0 20px rgba(0, 243, 255, 0.3);
+        }
+
+        @keyframes slideInRight {
+            from {
+                opacity: 0;
+                transform: translateX(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        .result-question {
+            font-family: 'Orbitron', sans-serif;
+            font-weight: 700;
+            color: var(--secondary);
+            margin-bottom: 10px;
+            font-size: 1.1rem;
+        }
+
+        .result-answer {
+            color: rgba(255, 255, 255, 0.9);
+            line-height: 1.6;
+            padding-left: 20px;
+            border-left: 2px solid rgba(0, 243, 255, 0.3);
+        }
+
+        /* Stats Bar */
+        .stats-bar {
+            display: flex;
+            justify-content: space-around;
+            margin-top: 30px;
+            padding: 20px;
+            background: rgba(0, 0, 0, 0.4);
+            border-radius: 10px;
+            animation: fadeIn 1s ease-out 1s backwards;
+        }
+
+        .stat {
+            text-align: center;
+        }
+
+        .stat-value {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 2rem;
+            font-weight: 900;
+            background: linear-gradient(135deg, var(--primary), var(--success));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .stat-label {
+            font-size: 0.8rem;
+            color: rgba(255, 255, 255, 0.5);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        /* Error Message */
+        .error-message {
+            display: none;
+            background: rgba(255, 0, 85, 0.1);
+            border: 2px solid var(--error);
+            color: var(--error);
+            padding: 15px 20px;
+            border-radius: 10px;
+            margin-top: 20px;
+            animation: shake 0.5s ease-out;
+        }
+
+        .error-message.active {
+            display: block;
+        }
+
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            25% { transform: translateX(-10px); }
+            75% { transform: translateX(10px); }
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 2.5rem;
+            }
+
+            .subtitle {
+                font-size: 1rem;
+            }
+
+            .main-panel {
+                padding: 20px;
+            }
+
+            .button-group {
+                flex-direction: column;
+            }
+
+            .btn {
+                width: 100%;
+            }
+
+            .stats-bar {
+                flex-direction: column;
+                gap: 20px;
+            }
+        }
+
+        /* Scrollbar */
+        ::-webkit-scrollbar {
+            width: 10px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: var(--darker);
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: linear-gradient(var(--primary), var(--tertiary));
+            border-radius: 5px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: linear-gradient(var(--secondary), var(--primary));
+        }
+    </style>
+</head>
+<body>
+    <!-- Animated Background -->
+    <div class="background"></div>
+    <div class="grid-overlay"></div>
+    <div class="particles" id="particles"></div>
+
+    <div class="container">
+        <!-- Header -->
+        <header>
+            <div class="logo">
+                <svg width="100" height="100" viewBox="0 0 100 100">
+                    <defs>
+                        <linearGradient id="grad" x1="0%" y1="0%" x2="100%" y2="100%">
+                            <stop offset="0%" style="stop-color:#00f3ff;stop-opacity:1" />
+                            <stop offset="100%" style="stop-color:#8338ec;stop-opacity:1" />
+                        </linearGradient>
+                    </defs>
+                    <circle cx="50" cy="50" r="45" fill="none" stroke="url(#grad)" stroke-width="3">
+                        <animate attributeName="stroke-dasharray" from="0,283" to="283,0" dur="2s" repeatCount="indefinite"/>
+                    </circle>
+                    <text x="50" y="60" text-anchor="middle" font-family="Orbitron" font-size="40" font-weight="900" fill="url(#grad)">AI</text>
+                </svg>
+            </div>
+            <h1>AI BATTLE ARENA</h1>
+            <p class="subtitle">ADVANCED RAG SYSTEM • LLAMA 3.1 • LORA OPTIMIZED</p>
+        </header>
+
+        <!-- Main Panel -->
+        <div class="main-panel">
+            <form id="ragForm">
+                <!-- PDF URL Input -->
+                <div class="form-section">
+                    <label for="pdfUrl">PDF Document URL</label>
+                    <input 
+                        type="url" 
+                        id="pdfUrl" 
+                        placeholder="https://example.com/document.pdf"
+                        required
+                    >
+                </div>
+
+                <!-- Questions Input -->
+                <div class="form-section">
+                    <label>Questions (5-15 required)</label>
+                    <div class="questions-container" id="questionsContainer">
+                        <div class="question-item">
+                            <input type="text" placeholder="Question 1" class="question-input" required>
+                        </div>
+                        <div class="question-item">
+                            <input type="text" placeholder="Question 2" class="question-input" required>
+                        </div>
+                        <div class="question-item">
+                            <input type="text" placeholder="Question 3" class="question-input" required>
+                        </div>
+                        <div class="question-item">
+                            <input type="text" placeholder="Question 4" class="question-input" required>
+                        </div>
+                        <div class="question-item">
+                            <input type="text" placeholder="Question 5" class="question-input" required>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Buttons -->
+                <div class="button-group">
+                    <button type="button" class="btn btn-secondary" onclick="addQuestion()">
+                        <span>+ Add Question</span>
+                    </button>
+                    <button type="submit" class="btn btn-primary">
+                        <span>🚀 Analyze Document</span>
+                    </button>
+                </div>
+            </form>
+
+            <!-- Loading State -->
+            <div class="loading" id="loading">
+                <div class="spinner"></div>
+                <p class="loading-text">PROCESSING DOCUMENT...</p>
+                <p style="color: rgba(255,255,255,0.5); margin-top: 10px;">Extracting context • Generating embeddings • Analyzing queries</p>
+            </div>
+
+            <!-- Error Message -->
+            <div class="error-message" id="errorMessage"></div>
+
+            <!-- Results -->
+            <div class="results" id="results">
+                <h2 style="font-family: 'Orbitron', sans-serif; color: var(--primary); margin-bottom: 20px; font-size: 1.8rem;">
+                    📊 ANALYSIS RESULTS
+                </h2>
+                <div id="resultsContainer"></div>
+            </div>
+        </div>
+
+        <!-- Stats Bar -->
+        <div class="stats-bar">
+            <div class="stat">
+                <div class="stat-value" id="modelStat">Llama 3.1</div>
+                <div class="stat-label">Model</div>
+            </div>
+            <div class="stat">
+                <div class="stat-value" id="paramStat">8B</div>
+                <div class="stat-label">Parameters</div>
+            </div>
+            <div class="stat">
+                <div class="stat-value" id="accuracyStat">95%</div>
+                <div class="stat-label">Target Accuracy</div>
+            </div>
+            <div class="stat">
+                <div class="stat-value" id="speedStat">&lt;8s</div>
+                <div class="stat-label">Response Time</div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Generate floating particles
+        const particlesContainer = document.getElementById('particles');
+        for (let i = 0; i < 30; i++) {
+            const particle = document.createElement('div');
+            particle.className = 'particle';
+            particle.style.left = Math.random() * 100 + '%';
+            particle.style.top = Math.random() * 100 + '%';
+            particle.style.animationDuration = (Math.random() * 10 + 5) + 's';
+            particle.style.animationDelay = Math.random() * 5 + 's';
+            particlesContainer.appendChild(particle);
+        }
+
+        // Add question functionality
+        let questionCount = 5;
+        
+        function addQuestion() {
+            if (questionCount >= 15) {
+                showError('Maximum 15 questions allowed');
+                return;
+            }
+            
+            questionCount++;
+            const container = document.getElementById('questionsContainer');
+            const questionDiv = document.createElement('div');
+            questionDiv.className = 'question-item';
+            questionDiv.style.animation = 'slideInLeft 0.5s ease-out';
+            questionDiv.innerHTML = `
+                <input type="text" placeholder="Question ${questionCount}" class="question-input" required>
+                <button type="button" class="btn-remove" onclick="removeQuestion(this)">✕</button>
+            `;
+            container.appendChild(questionDiv);
+        }
+
+        function removeQuestion(button) {
+            if (questionCount <= 5) {
+                showError('Minimum 5 questions required');
+                return;
+            }
+            
+            button.parentElement.remove();
+            questionCount--;
+            
+            // Renumber remaining questions
+            const inputs = document.querySelectorAll('.question-input');
+            inputs.forEach((input, index) => {
+                input.placeholder = `Question ${index + 1}`;
+            });
+        }
+
+        // Form submission
+        document.getElementById('ragForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            
+            const pdfUrl = document.getElementById('pdfUrl').value;
+            const questionInputs = document.querySelectorAll('.question-input');
+            const questions = Array.from(questionInputs)
+                .map(input => input.value.trim())
+                .filter(q => q !== '');
+            
+            // Validation
+            if (questions.length < 5 || questions.length > 15) {
+                showError('Please provide between 5 and 15 questions');
+                return;
+            }
+            
+            // Show loading
+            document.getElementById('loading').classList.add('active');
+            document.getElementById('results').classList.remove('active');
+            document.getElementById('errorMessage').classList.remove('active');
+            
+            const startTime = Date.now();
+            
+            try {
+                // Make API request
+                const response = await fetch('http://localhost:8000/aibattle', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        pdf_url: pdfUrl,
+                        questions: questions
+                    })
+                });
+                
+                const elapsedTime = ((Date.now() - startTime) / 1000).toFixed(2);
+                
+                if (!response.ok) {
+                    throw new Error(`Server error: ${response.status}`);
+                }
+                
+                const data = await response.json();
+                
+                // Hide loading
+                document.getElementById('loading').classList.remove('active');
+                
+                // Display results
+                displayResults(data.answers, questions, elapsedTime);
+                
+            } catch (error) {
+                document.getElementById('loading').classList.remove('active');
+                showError(`Error: ${error.message}`);
+            }
+        });
+
+        function displayResults(answers, questions, elapsedTime) {
+            const resultsContainer = document.getElementById('resultsContainer');
+            resultsContainer.innerHTML = '';
+            
+            answers.forEach((answer, index) => {
+                const resultDiv = document.createElement('div');
+                resultDiv.className = 'result-item';
+                resultDiv.style.animationDelay = `${index * 0.1}s`;
+                resultDiv.innerHTML = `
+                    <div class="result-question">Q${index + 1}: ${questions[index]}</div>
+                    <div class="result-answer">${answer}</div>
+                `;
+                resultsContainer.appendChild(resultDiv);
+            });
+            
+            // Update stats
+            document.getElementById('speedStat').textContent = elapsedTime + 's';
+            
+            // Show results
+            document.getElementById('results').classList.add('active');
+        }
+
+        function showError(message) {
+            const errorDiv = document.getElementById('errorMessage');
+            errorDiv.textContent = message;
+            errorDiv.classList.add('active');
+            
+            setTimeout(() => {
+                errorDiv.classList.remove('active');
+            }, 5000);
+        }
+
+        // Demo mode (remove in production)
+        function loadDemo() {
+            document.getElementById('pdfUrl').value = 'https://arxiv.org/pdf/2301.00001.pdf';
+            const inputs = document.querySelectorAll('.question-input');
+            const demoQuestions = [
+                'What is the main topic of this paper?',
+                'Who are the authors?',
+                'What dataset was used in the experiments?',
+                'What were the key findings?',
+                'What future work is suggested?'
+            ];
+            inputs.forEach((input, index) => {
+                if (demoQuestions[index]) {
+                    input.value = demoQuestions[index];
+                }
+            });
+        }
+
+        // Uncomment to auto-load demo data
+        // loadDemo();
+    </script>
+</body>
+</html>
