@@ -1,12 +1,7 @@
 services:
   - type: web
     name: ai-battle-rag
-    env: python
+    env: docker
     plan: free
     region: oregon
-
-    pythonVersion: 3.11.9
-
-    buildCommand: pip install --upgrade pip && pip install -r requirements.txt
-    startCommand: python api_server.py
-    healthCheckPath: /health
+    dockerfilePath: ./Dockerfile
