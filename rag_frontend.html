@@ -650,22 +650,10 @@
 
                 <!-- Questions Input -->
                 <div class="form-section">
-                    <label>Questions (5-15 required)</label>
+                    <label>Questions (add as many as you want)</label>
                     <div class="questions-container" id="questionsContainer">
                         <div class="question-item">
                             <input type="text" placeholder="Question 1" class="question-input" required>
-                        </div>
-                        <div class="question-item">
-                            <input type="text" placeholder="Question 2" class="question-input" required>
-                        </div>
-                        <div class="question-item">
-                            <input type="text" placeholder="Question 3" class="question-input" required>
-                        </div>
-                        <div class="question-item">
-                            <input type="text" placeholder="Question 4" class="question-input" required>
-                        </div>
-                        <div class="question-item">
-                            <input type="text" placeholder="Question 5" class="question-input" required>
                         </div>
                     </div>
                 </div>
@@ -735,29 +723,24 @@
         }
 
         // Add question functionality
-        let questionCount = 5;
+        let questionCount = 1;
         
         function addQuestion() {
-            if (questionCount >= 15) {
-                showError('Maximum 15 questions allowed');
-                return;
-            }
-            
             questionCount++;
             const container = document.getElementById('questionsContainer');
             const questionDiv = document.createElement('div');
             questionDiv.className = 'question-item';
             questionDiv.style.animation = 'slideInLeft 0.5s ease-out';
             questionDiv.innerHTML = `
-                <input type="text" placeholder="Question ${questionCount}" class="question-input" required>
+                <input type="text" placeholder="Question ${questionCount}" class="question-input">
                 <button type="button" class="btn-remove" onclick="removeQuestion(this)">✕</button>
             `;
             container.appendChild(questionDiv);
         }
 
         function removeQuestion(button) {
-            if (questionCount <= 5) {
-                showError('Minimum 5 questions required');
+            if (questionCount <= 1) {
+                showError('At least 1 question is required');
                 return;
             }
             
@@ -782,8 +765,8 @@
                 .filter(q => q !== '');
             
             // Validation
-            if (questions.length < 5 || questions.length > 15) {
-                showError('Please provide between 5 and 15 questions');
+            if (questions.length < 1) {
+                showError('Please provide at least 1 question');
                 return;
             }
             

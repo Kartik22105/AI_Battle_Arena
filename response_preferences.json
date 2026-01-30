@@ -1,0 +1,46 @@
+{
+  "output_format": {
+    "style": "continuous",
+    "flow": "connected",
+    "sentence_linking": true,
+    "min_sentences": 3,
+    "max_sentences": 8,
+    "coherence": "high"
+  },
+  "text_processing": {
+    "remove_fragments": true,
+    "filter_toc": true,
+    "filter_headers": true,
+    "filter_page_numbers": true,
+    "require_complete_sentences": true,
+    "min_words_per_sentence": 5
+  },
+  "content_selection": {
+    "prefer_paragraphs": true,
+    "maintain_context": true,
+    "preserve_flow": true,
+    "avoid_jumps": true,
+    "sequential_extraction": true
+  },
+  "transition_words": [
+    "Additionally",
+    "Furthermore",
+    "Moreover",
+    "In addition",
+    "Similarly",
+    "Consequently",
+    "Therefore",
+    "As a result",
+    "However",
+    "Nevertheless",
+    "Meanwhile",
+    "Subsequently"
+  ],
+  "quality_rules": {
+    "no_isolated_numbers": true,
+    "no_broken_sentences": true,
+    "no_list_items_only": true,
+    "ensure_topic_continuity": true,
+    "link_related_concepts": true
+  }
+}
